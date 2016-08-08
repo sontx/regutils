@@ -224,7 +224,12 @@ namespace RegUtils
             }
             return null;
         }
-        
+
+        public static Task<List<UninstallInformation>> GetUninstallInformationsAsync(ProgramScope scope, Architecture architecture)
+        {
+            return Task.Run(() => { return GetUninstallInformations(scope, architecture); });
+        }
+
         #endregion
     }
 }
