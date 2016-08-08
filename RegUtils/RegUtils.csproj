@@ -40,8 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Architecture.cs" />
+    <Compile Include="AutoBoot.cs" />
     <Compile Include="InternalLog.cs" />
     <Compile Include="ProgramInstalling.cs" />
+    <Compile Include="ProgramScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UninstallInformation.cs" />
   </ItemGroup>
