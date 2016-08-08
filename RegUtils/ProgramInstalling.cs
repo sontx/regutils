@@ -85,7 +85,27 @@ namespace RegUtils
             info.Contact = key.GetValue("Contact", "").ToString();
             info.InstallLocation = key.GetValue("InstallLocation", "").ToString();
             info.EstimateSize = int.Parse(key.GetValue("EstimateSize", "0").ToString());
-            info.InstallDate = DateTime.ParseExact(key.GetValue("InstallDate", TODAY).ToString(), DATE_KEY_FORMAT, EN_US);
+
+            string installDateString = key.GetValue("InstallDate", "").ToString();
+
+            if (installDateString != "")
+            {
+                if (key.GetValueKind("InstallDate") == RegistryValueKind.String)
+                {
+                    DateTime installDate;
+                    if (DateTime.TryParseExact(installDateString, DATE_KEY_FORMAT, EN_US, DateTimeStyles.NoCurrentDateDefault, out installDate))
+                        info.InstallDate = installDate;
+                    else
+                        info.InstallDate = DateTime.Now;
+                }
+                else
+                {
+                    DateTime startDate = new DateTime(1970, 1, 1, 0, 0, 0);
+                    Int64 regVal = Convert.ToInt64(installDateString);
+                    info.InstallDate = startDate.AddSeconds(regVal);
+                }
+            }
+            
             return info;
         }
 
