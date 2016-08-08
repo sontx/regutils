@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 
@@ -177,6 +178,53 @@ namespace RegUtils
             return Task.Run(() => { return GetUninstallInformation(displayNamePattern); });
         }
 
+        private static List<UninstallInformation> GetUninstallInformations(RegistryKey hroot, string keyPath)
+        {
+            using (var hkey = hroot.OpenSubKey(keyPath, false))
+            {
+                var programKeys = hkey.GetSubKeyNames();
+                var infos = new List<UninstallInformation>(programKeys.Length);
+
+                foreach (var programkey in programKeys)
+                {
+                    using (var key = hkey.OpenSubKey(programkey, false))
+                    {
+                        var info = GetUninstallInformation(key);
+                        if (!string.IsNullOrEmpty(info.DisplayName))
+                            infos.Add(info);
+                    }
+                }
+
+                return infos;
+            }
+        }
+
+        public static List<UninstallInformation> GetUninstallInformations(ProgramScope scope, Architecture architecture)
+        {
+            switch (scope)
+            {
+                case ProgramScope.Machine:
+                    switch (architecture)
+                    {
+                        case Architecture.x64:
+                            return GetUninstallInformations(Registry.LocalMachine, UNPATH_64);
+                        case Architecture.x86:
+                            return GetUninstallInformations(Registry.LocalMachine, UNPATH_32);
+                    }
+                    break;
+                case ProgramScope.User:
+                    switch (architecture)
+                    {
+                        case Architecture.x64:
+                            return GetUninstallInformations(Registry.CurrentUser, UNPATH_64);
+                        case Architecture.x86:
+                            return GetUninstallInformations(Registry.CurrentUser, UNPATH_32);
+                    }
+                    break;
+            }
+            return null;
+        }
+        
         #endregion
     }
 }
