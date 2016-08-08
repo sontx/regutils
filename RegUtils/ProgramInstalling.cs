@@ -59,6 +59,8 @@ namespace RegUtils
 
         public static bool CheckProgramInstalled(string displayNamePattern)
         {
+            if (string.IsNullOrEmpty(displayNamePattern))
+                throw new ArgumentNullException("displayNamePattern is null or empty.");
             return CheckProgramInstalled(UNPATH_32, displayNamePattern) ||
                    CheckProgramInstalled(UNPATH_64, displayNamePattern);
         }
