@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RegUtils
+namespace In.Sontx.RegUtils
 {
     public class UninstallInformation
     {

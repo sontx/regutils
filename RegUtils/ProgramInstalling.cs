@@ -1,12 +1,12 @@
-﻿using Microsoft.Win32;
-using RegUtils.Exceptions;
+﻿using In.Sontx.RegUtils.Exceptions;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 
-namespace RegUtils
+namespace In.Sontx.RegUtils
 {
     public static class ProgramInstalling
     {

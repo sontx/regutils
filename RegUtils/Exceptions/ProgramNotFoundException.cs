@@ -1,4 +1,4 @@
-﻿namespace RegUtils.Exceptions
+﻿namespace In.Sontx.RegUtils.Exceptions
 {
     public class ProgramNotFoundException : RuntimeException
     {

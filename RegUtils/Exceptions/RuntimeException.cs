@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RegUtils.Exceptions
+namespace In.Sontx.RegUtils.Exceptions
 {
     public abstract class RuntimeException : Exception
     {

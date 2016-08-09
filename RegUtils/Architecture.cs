@@ -1,4 +1,4 @@
-﻿namespace RegUtils
+﻿namespace In.Sontx.RegUtils
 {
     public enum Architecture
     {

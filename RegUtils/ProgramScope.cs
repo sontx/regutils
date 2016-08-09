@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RegUtils
+namespace In.Sontx.RegUtils
 {
     public enum ProgramScope
     {

@@ -2,7 +2,7 @@
 using System;
 using System.Diagnostics;
 
-namespace RegUtils
+namespace In.Sontx.RegUtils
 {
     internal static class InternalLog
     {

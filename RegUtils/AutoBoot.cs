@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RegUtils
+namespace In.Sontx.RegUtils
 {
     public static class AutoBoot
     {
