@@ -1,6 +1,8 @@
 ﻿using Microsoft.Win32;
+using RegUtils.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 
@@ -238,5 +240,43 @@ namespace RegUtils
         }
 
         #endregion
+
+        #region Uninstall Program
+
+        public static void UninstallAndWait(UninstallInformation info)
+        {
+            if (info == null)
+                throw new ArgumentNullException("info parameter is null.");
+            if (string.IsNullOrEmpty(info.DisplayName) || string.IsNullOrEmpty(info.UninstallString))
+                throw new ArgumentException("Display name or uninstall string is null or empty.");
+            using(Process process = new Process())
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo(info.UninstallString);
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
+            }
+        }
+
+        public static void UninstallAndWait(string displayNamePattern)
+        {
+            var info = GetUninstallInformation(displayNamePattern);
+            if (info == null)
+                throw new ProgramNotFoundException(string.Format("Program '{0}' not found.", displayNamePattern));
+            UninstallAndWait(info);
+        }
+
+        public static Task UninstallAsync(UninstallInformation info)
+        {
+            return Task.Run(() => { UninstallAndWait(info); });
+        }
+
+        public static Task UninstallAsync(string displayNamePattern)
+        {
+            return Task.Run(() => { UninstallAndWait(displayNamePattern); });
+        }
+
+        #endregion
+
     }
 }

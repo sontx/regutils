@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Architecture.cs" />
     <Compile Include="AutoBoot.cs" />
+    <Compile Include="Exceptions\ProgramNotFoundException.cs" />
+    <Compile Include="Exceptions\RuntimeException.cs" />
     <Compile Include="InternalLog.cs" />
     <Compile Include="ProgramInstalling.cs" />
     <Compile Include="ProgramScope.cs" />
@@ -49,9 +51,7 @@
     <Compile Include="RunInformation.cs" />
     <Compile Include="UninstallInformation.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
