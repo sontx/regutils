@@ -1,4 +1,6 @@
 ﻿using Microsoft.Win32;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RegUtils
 {
@@ -122,6 +124,71 @@ namespace RegUtils
         public static void DisableAutoBoot(string displayName)
         {
             DisableAutoBoot(ProgramScope.User, Architecture.Undefined, displayName);
+        }
+
+        public static List<RunInformation> GetRunInformations(RegistryKey hroot, string runKeyPath)
+        {
+            using (var hkey = hroot.OpenSubKey(runKeyPath, false))
+            {
+                var programNames = hkey.GetValueNames();
+                var infos = new List<RunInformation>(programNames.Length);
+                foreach (var programName in programNames)
+                {
+                    string executablePath = hkey.GetValue(programName, "").ToString();
+                    RunInformation info = new RunInformation()
+                    {
+                        DisplayName = programName,
+                        ExecutablePath = executablePath
+                    };
+                    infos.Add(info);
+                }
+                return infos;
+            }
+        }
+
+        public static List<RunInformation> GetRunInformations(ProgramScope scope, Architecture architecture)
+        {
+            switch (scope)
+            {
+                case ProgramScope.Machine:
+                    switch (architecture)
+                    {
+                        case Architecture.x64:
+                            return GetRunInformations(Registry.LocalMachine, RUNPATH_64);
+                        case Architecture.x86:
+                            return GetRunInformations(Registry.LocalMachine, RUNPATH_32);
+                        case Architecture.Undefined:
+                            return GetRunInformations(Registry.LocalMachine, RUNPATH_UN);
+                    }
+                    break;
+                case ProgramScope.User:
+                    switch (architecture)
+                    {
+                        case Architecture.x64:
+                            return GetRunInformations(Registry.CurrentUser, RUNPATH_64);
+                        case Architecture.x86:
+                            return GetRunInformations(Registry.CurrentUser, RUNPATH_32);
+                        case Architecture.Undefined:
+                            return GetRunInformations(Registry.CurrentUser, RUNPATH_UN);
+                    }
+                    break;
+            }
+            return null;
+        }
+
+        public static Task<List<RunInformation>> GetRunInformationsAsync(ProgramScope scope, Architecture architecture)
+        {
+            return Task.Run(() => { return GetRunInformations(scope, architecture); });
+        }
+
+        public static List<RunInformation> GetRunInformations()
+        {
+            return GetRunInformations(ProgramScope.User, Architecture.Undefined);
+        }
+
+        public static Task<List<RunInformation>> GetRunInformationsAsync()
+        {
+            return Task.Run(() => { return GetRunInformations(); });
         }
     }
 }
