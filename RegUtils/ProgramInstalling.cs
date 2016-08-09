@@ -10,6 +10,7 @@ namespace RegUtils
     {
         private const string UNPATH_32 = "SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
         private const string UNPATH_64 = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
+        private const string UNPATH_UN = UNPATH_64;
         private const string DATE_KEY_FORMAT = "yyyyMMdd";
         private static readonly string TODAY = DateTime.Now.ToString(DATE_KEY_FORMAT);
         private static readonly CultureInfo EN_US = new CultureInfo("en-US");
@@ -212,6 +213,8 @@ namespace RegUtils
                             return GetUninstallInformations(Registry.LocalMachine, UNPATH_64);
                         case Architecture.x86:
                             return GetUninstallInformations(Registry.LocalMachine, UNPATH_32);
+                        case Architecture.Undefined:
+                            return GetUninstallInformations(Registry.LocalMachine, UNPATH_UN);
                     }
                     break;
                 case ProgramScope.User:
@@ -221,6 +224,8 @@ namespace RegUtils
                             return GetUninstallInformations(Registry.CurrentUser, UNPATH_64);
                         case Architecture.x86:
                             return GetUninstallInformations(Registry.CurrentUser, UNPATH_32);
+                        case Architecture.Undefined:
+                            return GetUninstallInformations(Registry.CurrentUser, UNPATH_UN);
                     }
                     break;
             }
